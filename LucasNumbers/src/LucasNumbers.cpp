@@ -5,9 +5,9 @@
 * */
 
 #include <iostream>
+#include <time.h>
 using namespace std;
 
-// TODO printing
 
 /* Recursive function to calculate the Nth term of Lucas numbers
  * @param n Nth term to be calculated
@@ -28,8 +28,10 @@ int lucas(int n) {
  * prints numbers
  */
 int main() {
+	clock_t t;
 	int num;
 	int i = 0;
+	float ratioArr[num] = {};
 
 	cout << "Enter number of terms" << endl;
 	cin >> num;
@@ -38,12 +40,26 @@ int main() {
 		return 0;
 	}
 
-	//cout << lucas(num);
-
+	clock_t tprev = 1; //TODO starting number
 	while ( i <= num){
-		cout << lucas(i) << " "; // calling recursive lucas function to calculate & print values
+		t = clock(); // starting time;
+		cout << lucas(i) << "("; // calling recursive lucas function to calculate & print values
+		t = clock()-t; // ending time;
+		cout << (float)t/CLOCKS_PER_SEC << "s) ";
+
+		float curRatio = ((float)t/CLOCKS_PER_SEC)/((float)tprev/CLOCKS_PER_SEC);
+		ratioArr[i] = curRatio;
+		cout << "ratio: " << curRatio << endl;
+		tprev = t;
 		i++;
 	}
 	cout << endl;
+
+	float ratioTotal = 0;
+	for (int i = 0; i < num; i++){
+		ratioTotal = ratioTotal + ratioArr[i];
+	}
+	cout << "average ratio: " << ratioTotal/num << endl;
+
 	return 0;
 }
